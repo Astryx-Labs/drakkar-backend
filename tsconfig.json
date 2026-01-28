@@ -22,11 +22,11 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/libs": [
-        "libs/libs/src"
+      "@app/common": [
+        "libs/common/src"
       ],
-      "@app/libs/*": [
-        "libs/libs/src/*"
+      "@app/common/*": [
+        "libs/common/src/*"
       ]
     }
   }
