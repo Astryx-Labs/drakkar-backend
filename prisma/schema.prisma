@@ -13,41 +13,88 @@ datasource db {
   provider = "postgresql"
 }
 
-// ===== Start Enums =====
+// =============================================================================
+// ENUMS
+// =============================================================================
+
 enum Sex {
   MALE
   FEMALE
 }
-// ========================
 
-// User model with many-to-many relation to Role via UserRole
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  CUSTOM
+}
+
+enum LockReason {
+  THIRST_TRAP
+  INAPPROPRIATE_CONTENT
+  HARASSMENT
+  SPAM
+  OTHER
+}
+
+enum ShareType {
+  REPOST  // Simple repost to own feed
+  QUOTE   // Share with added commentary
+  MESSAGE // Shared via direct message
+}
+
+// =============================================================================
+// USER & PROFILE
+// =============================================================================
+
 model User {
-  id          String     @id @default(uuid())
-  displayName String     @unique
-  email       String     @unique
-  password    String
-  roles       UserRole[]
-  profile     Profile?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id            String       @id @default(uuid())
+  displayName   String       @unique
+  email         String       @unique
+  password      String
+  profile       Profile?
+  roles         UserRole[]
+  posts         Post[]
+  viewablePosts PostViewer[]
+  likes         Like[]
+  comments      Comment[]
+  shares        Share[]
+  postReports   PostReport[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }
 
-// Profile model linked one-to-one with User
 model Profile {
-  id         String   @id @default(uuid())
-  userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id])
-  firstName  String
-  lastName   String
+  id          String             @id @default(uuid())
+  userId      String             @unique
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
   dateOfBirth DateTime
-  sex        Sex
-  bio        String?
-  metadata   Json?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  sex         Sex
+  bio         String?
+  metadata    Json?
+  visibility  ProfileVisibility?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
 }
 
-// Role model with many-to-many relation to Permission via RolePermission
+model ProfileVisibility {
+  id          String   @id @default(uuid())
+  profileId   String   @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  firstName   Boolean  @default(true)
+  lastName    Boolean  @default(true)
+  dateOfBirth Boolean  @default(false)
+  sex         Boolean  @default(false)
+  bio         Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// =============================================================================
+// ROLES & PERMISSIONS (RBAC)
+// =============================================================================
+
 model Role {
   id          String           @id @default(uuid())
   name        String           @unique
@@ -57,7 +104,6 @@ model Role {
   updatedAt   DateTime         @updatedAt
 }
 
-// Permission model
 model Permission {
   id        String           @id @default(uuid())
   name      String           @unique
@@ -66,26 +112,154 @@ model Permission {
   updatedAt DateTime         @updatedAt
 }
 
-/// Join table for User ↔ Role
+/// Join table: User ↔ Role
 model UserRole {
   userId    String
   roleId    String
-  user      User     @relation(fields: [userId], references: [id])
-  role      Role     @relation(fields: [roleId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@id([userId, roleId])
 }
 
-/// Join table for Role ↔ Permission
+/// Join table: Role ↔ Permission
 model RolePermission {
   roleId       String
   permissionId String
-  role         Role       @relation(fields: [roleId], references: [id])
-  permission   Permission @relation(fields: [permissionId], references: [id])
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
   @@id([roleId, permissionId])
+}
+
+// =============================================================================
+// POSTS & FEED
+// =============================================================================
+
+model Post {
+  id                 String       @id @default(uuid())
+  authorId           String
+  author             User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content            String
+  mediaUrls          String[]
+
+  // Visibility
+  visibility         Visibility   @default(PUBLIC)
+  customViewers      PostViewer[]
+
+  // Moderation lock
+  isLocked           Boolean      @default(false)
+  lockReason         LockReason?
+  lockedAt           DateTime?
+  lockedById         String?
+  lockNote           String?
+  autoLockedBySystem Boolean      @default(false)
+  reportCount        Int          @default(0)
+
+  // Engagement relations
+  likes              Like[]
+  comments           Comment[]
+  shares             Share[]
+  reports            PostReport[]
+
+  // Denormalized counts (for performance)
+  likesCount         Int          @default(0)
+  commentsCount      Int          @default(0)
+  sharesCount        Int          @default(0)
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  @@index([authorId])
+  @@index([visibility])
+  @@index([isLocked])
+  @@index([createdAt])
+}
+
+/// Join table: Post custom visibility (specific users who can view)
+model PostViewer {
+  postId    String
+  viewerId  String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  viewer    User     @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([postId, viewerId])
+  @@index([viewerId])
+}
+
+// =============================================================================
+// ENGAGEMENT (Likes, Comments, Shares)
+// =============================================================================
+
+model Like {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model Comment {
+  id         String    @id @default(uuid())
+  postId     String
+  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content    String
+  parentId   String?
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    Comment[] @relation("CommentReplies")
+  likesCount Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([parentId])
+}
+
+model Share {
+  id        String    @id @default(uuid())
+  postId    String
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shareType ShareType @default(REPOST)
+  caption   String?
+  createdAt DateTime  @default(now())
+
+  @@index([postId])
+  @@index([userId])
+}
+
+// =============================================================================
+// MODERATION
+// =============================================================================
+
+model PostReport {
+  id           String     @id @default(uuid())
+  postId       String
+  post         Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporterId   String
+  reporter     User       @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reason       LockReason
+  description  String?
+  reviewed     Boolean    @default(false)
+  reviewedAt   DateTime?
+  reviewedById String?
+  createdAt    DateTime   @default(now())
+
+  @@index([postId])
+  @@index([reporterId])
+  @@index([reviewed])
 }
