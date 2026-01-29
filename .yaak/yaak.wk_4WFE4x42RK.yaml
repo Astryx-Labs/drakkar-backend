@@ -1,0 +1,14 @@
+type: workspace
+model: workspace
+id: wk_4WFE4x42RK
+createdAt: 2026-01-29T14:36:43.701189
+updatedAt: 2026-01-29T14:36:46.740244
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: Drakkar
+encryptionKeyChallenge: eUE0azNuQwFCfGueWL5GvMswrMw0FV3LtsxKcL4YoZwvWrbfPf26oI5gU3jIz+U5mKHR8VEiGhMVQ61a7p2fYAg2BUA/9Rnl+xrmj20N/ntMmY8Jyg8z/1muAnmhgiWIq4k=
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0
