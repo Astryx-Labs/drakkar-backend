@@ -37,8 +37,8 @@ enum LockReason {
 }
 
 enum ShareType {
-  REPOST  // Simple repost to own feed
-  QUOTE   // Share with added commentary
+  REPOST // Simple repost to own feed
+  QUOTE // Share with added commentary
   MESSAGE // Shared via direct message
 }
 
@@ -74,6 +74,7 @@ model Profile {
   bio         String?
   metadata    Json?
   visibility  ProfileVisibility?
+  theme       ProfileTheme?
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
 }
@@ -141,38 +142,38 @@ model RolePermission {
 // =============================================================================
 
 model Post {
-  id                 String       @id @default(uuid())
-  authorId           String
-  author             User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  content            String
-  mediaUrls          String[]
+  id        String   @id @default(uuid())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  mediaUrls String[]
 
   // Visibility
-  visibility         Visibility   @default(PUBLIC)
-  customViewers      PostViewer[]
+  visibility    Visibility   @default(PUBLIC)
+  customViewers PostViewer[]
 
   // Moderation lock
-  isLocked           Boolean      @default(false)
+  isLocked           Boolean     @default(false)
   lockReason         LockReason?
   lockedAt           DateTime?
   lockedById         String?
   lockNote           String?
-  autoLockedBySystem Boolean      @default(false)
-  reportCount        Int          @default(0)
+  autoLockedBySystem Boolean     @default(false)
+  reportCount        Int         @default(0)
 
   // Engagement relations
-  likes              Like[]
-  comments           Comment[]
-  shares             Share[]
-  reports            PostReport[]
+  likes    Like[]
+  comments Comment[]
+  shares   Share[]
+  reports  PostReport[]
 
   // Denormalized counts (for performance)
-  likesCount         Int          @default(0)
-  commentsCount      Int          @default(0)
-  sharesCount        Int          @default(0)
+  likesCount    Int @default(0)
+  commentsCount Int @default(0)
+  sharesCount   Int @default(0)
 
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([authorId])
   @@index([visibility])
@@ -262,4 +263,19 @@ model PostReport {
   @@index([postId])
   @@index([reporterId])
   @@index([reviewed])
+}
+
+// ============================================================================
+// THEME
+// =============================================================================
+
+model ProfileTheme {
+  id        String   @id @default(uuid())
+  profileId String   @unique
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  config    Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
 }
