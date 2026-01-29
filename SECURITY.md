@@ -8,7 +8,7 @@ We take security seriously. If you discover a security vulnerability, please rep
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Instead, please send an email to **[security@astrylabs.com]** with:
+Instead, please send an email to **[security@astryxlabs.com]** with:
 
 - A description of the vulnerability
 - Steps to reproduce the issue
