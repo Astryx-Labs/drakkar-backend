@@ -1,0 +1,26 @@
+// Shared Enums
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  CUSTOM
+}
+
+enum LockReason {
+  THIRST_TRAP
+  INAPPROPRIATE_CONTENT
+  HARASSMENT
+  SPAM
+  OTHER
+}
+
+enum ShareType {
+  REPOST // Simple repost to own feed
+  QUOTE  // Share with added commentary
+  MESSAGE // Shared via direct message
+}

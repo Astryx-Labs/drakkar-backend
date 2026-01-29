@@ -1,0 +1,47 @@
+// Engagement (Likes, Comments, Shares)
+
+model Like {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model Comment {
+  id         String    @id @default(uuid())
+  postId     String
+  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content    String
+  parentId   String?
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    Comment[] @relation("CommentReplies")
+  likesCount Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([parentId])
+}
+
+model Share {
+  id        String    @id @default(uuid())
+  postId    String
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shareType ShareType @default(REPOST)
+  caption   String?
+  createdAt DateTime  @default(now())
+
+  @@index([postId])
+  @@index([userId])
+}
