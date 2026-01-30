@@ -1,47 +1,12 @@
 // User & Profile Models
 
 model User {
-  id            String       @id @default(uuid())
-  displayName   String       @unique
-  email         String       @unique
-  password      String
-  profile       Profile?
-  roles         UserRole[]
-  posts         Post[]
-  viewablePosts PostViewer[]
-  likes         Like[]
-  comments      Comment[]
-  shares        Share[]
-  postReports   PostReport[]
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-}
-
-model Profile {
-  id          String             @id @default(uuid())
-  userId      String             @unique
-  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  firstName   String
-  lastName    String
-  dateOfBirth DateTime
-  sex         Sex
-  bio         String?
-  metadata    Json?
-  visibility  ProfileVisibility?
-  theme       ProfileTheme?
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-}
-
-model ProfileVisibility {
-  id          String   @id @default(uuid())
-  profileId   String   @unique
-  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  firstName   Boolean  @default(true)
-  lastName    Boolean  @default(true)
-  dateOfBirth Boolean  @default(false)
-  sex         Boolean  @default(false)
-  bio         Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String   @id @default(uuid())
+  displayName       String   @unique
+  email             String   @unique
+  password          String
+  verificationToken String
+  expiresAt         DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

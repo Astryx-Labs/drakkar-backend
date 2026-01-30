@@ -7,31 +7,12 @@ export const userAuthSelector = {
 };
 export type UserAuthSelector = typeof userAuthSelector;
 
-// Prisma Selector for User Profile
-export const userProfileSelector = {
+// Prisma Selector for User Registration (excludes sensitive fields)
+export const userPublicSelector = {
   id: true,
   displayName: true,
-  profile: {
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      dateOfBirth: true,
-      sex: true,
-      bio: true,
-      metadata: true,
-      visibility: {
-        select: {
-          firstName: true,
-          lastName: true,
-          dateOfBirth: true,
-          sex: true,
-          bio: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
-    },
-  },
+  email: true,
+  createdAt: true,
+  updatedAt: true,
 };
-export type UserProfileSelector = typeof userProfileSelector;
+export type UserPublicSelector = typeof userPublicSelector;
