@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '@app/database/database.service';
-import { RegisterUserDto } from './dto/register-user.dto';
+import { RegisterUserDto } from './dto/user.dto';
 import { HashingService } from '@app/security/hashing.service';
 
 @Injectable()
