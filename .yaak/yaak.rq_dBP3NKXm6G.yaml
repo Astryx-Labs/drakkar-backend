@@ -1,0 +1,28 @@
+type: http_request
+model: http_request
+id: rq_dBP3NKXm6G
+createdAt: 2026-01-30T20:44:11.145892
+updatedAt: 2026-01-30T20:45:25.765070
+workspaceId: wk_4WFE4x42RK
+folderId: null
+authentication: {}
+authenticationType: null
+body:
+  text: |-
+    {
+      "email":"user@domain.tld",
+      "displayName":"WorldDrknss",
+      "password":"password"
+    }
+bodyType: application/json
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/json
+  id: C24zJEBqWB
+method: POST
+name: ''
+sortPriority: -1769697538242.0
+url: http://localhost:3000/v1/idm/register
+urlParameters: []

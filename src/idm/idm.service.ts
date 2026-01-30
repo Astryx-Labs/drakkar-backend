@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateIdmDto } from './dto/create-idm.dto';
-import { UpdateIdmDto } from './dto/update-idm.dto';
+import { DatabaseService } from '@app/database/database.service';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { HashingService } from '@app/security/hashing.service';
 
 @Injectable()
 export class IdmService {
-  create(createIdmDto: CreateIdmDto) {
-    return 'This action adds a new idm';
-  }
+  constructor(
+    private readonly prismaService: DatabaseService,
+    private readonly hashService: HashingService,
+  ) {}
 
-  findAll() {
-    return `This action returns all idm`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} idm`;
-  }
-
-  update(id: number, updateIdmDto: UpdateIdmDto) {
-    return `This action updates a #${id} idm`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} idm`;
+  async register(registerUserDto: RegisterUserDto) {
+    const { email, displayName, password } = registerUserDto;
+    const user = await this.prismaService.user.create({
+      data: {
+        email,
+        displayName,
+        password: await this.hashService.hash(password),
+      },
+    });
+    return user;
   }
 }

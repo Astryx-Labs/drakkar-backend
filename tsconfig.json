@@ -28,11 +28,23 @@
       "@app/common/*": [
         "libs/common/src/*"
       ],
+      "@app/database": [
+        "libs/database/src"
+      ],
+      "@app/database/*": [
+        "libs/database/src/*"
+      ],
       "@app/security": [
         "libs/security/src"
       ],
       "@app/security/*": [
         "libs/security/src/*"
+      ],
+      "@generated/prisma": [
+        "src/generated/prisma/client"
+      ],
+      "@generated/prisma/*": [
+        "src/generated/prisma/*"
       ]
     }
   }
