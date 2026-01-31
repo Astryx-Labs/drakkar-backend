@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { DatabaseModule } from '@app/database';
 import { IdmModule } from './idm/idm.module';
 import { ThemeModule } from './theme/theme.module';
 import { APP_GUARD } from '@nestjs/core';
+import { HybridThrottlerGuard } from './idm/guards/throttle/throttle.guard';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { APP_GUARD } from '@nestjs/core';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: HybridThrottlerGuard,
     },
   ],
 })

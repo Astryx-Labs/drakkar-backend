@@ -7,6 +7,7 @@ import { userPublicSelector } from '@app/common/prisma/selectors';
 import jwtConfig from './config/jwt.config';
 import type { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './interfaces/jwt.interface';
 
 @Injectable()
 export class IdmService {
@@ -91,7 +92,7 @@ export class IdmService {
       {
         sub: user.id,
         email: user.email,
-      },
+      } as JwtPayload,
       {
         audience: this.jwtConfiguation.audience,
         issuer: this.jwtConfiguation.issuer,

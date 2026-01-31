@@ -2,11 +2,12 @@ type: http_request
 model: http_request
 id: rq_sGZWe6hGdW
 createdAt: 2026-01-31T15:50:39.644546
-updatedAt: 2026-01-31T16:00:56.709630
+updatedAt: 2026-01-31T23:43:52.798490
 workspaceId: wk_4WFE4x42RK
 folderId: null
-authentication: {}
-authenticationType: null
+authentication:
+  token: ${[ secure(value=b64'WUVOQ19lVUUwYXpOdVF3RTdVUGp4cDBJTkxFUG5MdTJOUnoxOXhyNnR3Ly82MGE1cVhsOCtOQ1VVMHJrUmJPdVRURHdoUUtrREUwWEk4MmFEbHAyZ3NFWURPbDU5SGZkS0N6eUZkMUlKRTlSOVl1ZEFtUnJtVWR6NWtiWW9LT1RpazNYRzdCb0x3bVFrRXhiNllIVks0cEVqRlhTZjV6WFAxNVVSdW1FRUVYaDNHazhjeDUyQTl4ZjNweXdFUWpDdFhFVlE5eUUwOXJQbWNjTzNwZ0grWVVBSlZiOFNWQnljTklEcFpObThCV1FGV0JLWlRuVzBWem5TTHJrT0xzK3E3aStEVmpwZ1A1NXlkRHpNVDB4ZHNWdjhyaGl1SVA2UVRHeUJOUVpxVVJUNmhNZysvdTVtM2ZyR0FGOXRMcENySGlBaUJkR3RWSVJVSWxXeEUzaHpHaDg4VnltV3AveW1la2RGaGIwTC95R29LYi85VlJHWnMreGM5NGNZM1k1MnUrc0VuTmZ4ZmxjRkpqbndySytMQ1lOcHRGamdxdWpEYWU1OERpZWMyeFIvZmVJbytmU3FMRXEyclZIdHRNND0') ]}
+authenticationType: bearer
 body:
   text: |-
     {

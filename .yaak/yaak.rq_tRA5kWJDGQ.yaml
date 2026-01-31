@@ -1,0 +1,27 @@
+type: http_request
+model: http_request
+id: rq_tRA5kWJDGQ
+createdAt: 2026-01-31T23:49:31.455542
+updatedAt: 2026-01-31T23:53:23.681856
+workspaceId: wk_4WFE4x42RK
+folderId: null
+authentication:
+  token: ${[ secure(value=b64'WUVOQ19lVUUwYXpOdVF3SEhuNEpUV2F4U25rZDUrTVRDU0szVC8yUFhqYnFJdHBmaXcwUXJYK0EvbzlEVHU0ZkMwNjU0N3piOW50Zk5Gd1NsV0xRY0k3Q2Rma2puYzE5cHZGY3hnK0R6QVl0YlBPSmpFVG1LbzJnZG5SYkxvOFpUVDFwbEgvcVZIUlJMVkpNRjZFOUhlanA0bTczT2lVeEwvOThaYld5bTlyclIvYmNhVldDQzQ0WXZMSzZ5NnFLclFCOWpTc1lPY3l2N3ROemhFUkhhWWlHb3UxOUZ6RHJ0R0t2U2J5Y3JGeTk3NDRVWndKbzJQcDhWVHJCeEQ4b2g2TElYS085VWxIREpYWDY2bkZ0RFhRZmZPay9yc3dTZXB2eHBPWWZURWR0ZHpSM1ZQUmtLRk94V2pIR003cG1aNFduR09jYjQ3MHRlNlVIZW9xSEE2U1BBR1M2elBZejdldUJDaU95eXJyUkk4T0pDaGMwNlEzNFM4ek9WWVdFUDhvQ0R2eVB5N1pQVTNJOVYvVm0xUlRBUnBHNlJma3lRcUU0UTdMYi9mRVErY25sTEtjekhKRnJUOG1ESTN4cz0') ]}
+authenticationType: bearer
+body:
+  text: |-
+    {
+      "verificationToken":"91W1pfFg1UkwWTyrVOOTqQ"
+    }
+bodyType: application/json
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/json
+  id: C24zJEBqWB
+method: GET
+name: Me
+sortPriority: -1769697538241.997
+url: http://localhost:3000/v1/test/active-user
+urlParameters: []

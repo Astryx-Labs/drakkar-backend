@@ -1,8 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { IdmService } from './idm.service';
 import { LoginUserDto, RegisterUserDto, VerifyUserDto } from './dto/user.dto';
 import { Public } from './decorators/public.decorator';
 import { Throttle } from '@nestjs/throttler';
+import { ActiveUser } from './decorators/active-user.decorator';
+import type { JwtPayload } from './interfaces/jwt.interface';
 
 @Public()
 //TODO: Add both IP and User rate limiting
@@ -29,5 +31,18 @@ export class IdmController {
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.idmService.login(loginUserDto);
+  }
+}
+
+// TODO: Delete me later
+@Controller({
+  path: 'test',
+  version: '1',
+})
+export class TestController {
+  constructor(private readonly idmService: IdmService) {}
+  @Get('active-user')
+  getActiveUser(@ActiveUser() user: JwtPayload) {
+    return user;
   }
 }

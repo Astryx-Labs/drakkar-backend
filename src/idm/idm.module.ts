@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { IdmService } from './idm.service';
-import { IdmController } from './idm.controller';
+import { IdmController, TestController } from './idm.controller';
 import { SecurityModule } from '@app/security';
 import jwtConfig from './config/jwt.config';
 import { AccessTokenGuard } from './guards/authentication/authentication.guard';
@@ -14,7 +14,7 @@ import { APP_GUARD } from '@nestjs/core';
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
-  controllers: [IdmController],
+  controllers: [IdmController, TestController],
   providers: [
     IdmService,
     {
