@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_dBP3NKXm6G
 createdAt: 2026-01-30T20:44:11.145892
-updatedAt: 2026-01-31T15:50:32.464162
+updatedAt: 2026-01-31T16:00:45.015412
 workspaceId: wk_4WFE4x42RK
 folderId: null
 authentication: {}
@@ -21,7 +21,7 @@ headers:
   value: application/json
   id: C24zJEBqWB
 method: POST
-name: ''
+name: Register
 sortPriority: -1769697538242.0
 url: http://localhost:3000/v1/idm/register
 urlParameters: []

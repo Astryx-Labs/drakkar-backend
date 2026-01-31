@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_sGZWe6hGdW
-createdAt: 2026-01-31T15:50:39.644546
-updatedAt: 2026-01-31T16:00:56.709630
+id: rq_ESWf4dn27t
+createdAt: 2026-01-31T15:58:40.867884
+updatedAt: 2026-01-31T16:01:01.191669
 workspaceId: wk_4WFE4x42RK
 folderId: null
 authentication: {}
@@ -10,8 +10,7 @@ authenticationType: null
 body:
   text: |-
     {
-      "email":"user@domain.tld",
-      "password":"password"
+      "verificationToken":"91W1pfFg1UkwWTyrVOOTqQ"
     }
 bodyType: application/json
 description: ''
@@ -21,7 +20,7 @@ headers:
   value: application/json
   id: C24zJEBqWB
 method: POST
-name: Login
-sortPriority: -1769697538241.999
-url: http://localhost:3000/v1/idm/login
+name: Verify
+sortPriority: -1769697538241.998
+url: http://localhost:3000/v1/idm/verify
 urlParameters: []

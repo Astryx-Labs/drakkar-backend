@@ -10,7 +10,6 @@ export type UserAuthSelector = typeof userAuthSelector;
 // Prisma Selector for User Registration (excludes sensitive fields)
 export const userPublicSelector = {
   id: true,
-  displayName: true,
   email: true,
   createdAt: true,
   updatedAt: true,
