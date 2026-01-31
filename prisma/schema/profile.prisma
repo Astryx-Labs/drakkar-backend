@@ -1,0 +1,31 @@
+model Profile {
+    id          String    @id @default(uuid())
+    userId      String    @unique
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    firstName   String
+    lastName    String
+    displayName String    @unique
+    dateOfBirth DateTime?
+    bio         String?   @db.VarChar(255)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    // Relations
+    socials Socials?
+}
+
+model Socials {
+    id        String  @id @default(uuid())
+    profileId String  @unique
+    profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+    twitter   String?
+    facebook  String?
+    instagram String?
+    threads   String?
+    linkedin  String?
+    github    String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

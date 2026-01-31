@@ -6,12 +6,14 @@ export class RegisterUserDto {
   email: string;
 
   @IsString()
-  @IsNotEmpty()
-  displayName: string;
-
-  @IsString()
   @MinLength(8)
   password: string;
 }
 
 export class UpdateUserDto extends PartialType(RegisterUserDto) {}
+
+export class VerifyUserDto {
+  @IsString()
+  @IsNotEmpty()
+  verificationToken: string;
+}
