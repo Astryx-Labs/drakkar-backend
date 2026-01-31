@@ -1,15 +1,21 @@
 import { randomBytes } from 'node:crypto';
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { DatabaseService } from '@app/database/database.service';
-import { RegisterUserDto, VerifyUserDto } from './dto/user.dto';
+import { LoginUserDto, RegisterUserDto, VerifyUserDto } from './dto/user.dto';
 import { HashingService } from '@app/security/hashing.service';
 import { userPublicSelector } from '@app/common/prisma/selectors';
+import jwtConfig from './config/jwt.config';
+import type { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class IdmService {
   constructor(
     private readonly prismaService: DatabaseService,
     private readonly hashService: HashingService,
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguation: ConfigType<typeof jwtConfig>,
   ) {}
 
   async register(registerUserDto: RegisterUserDto) {
@@ -61,5 +67,38 @@ export class IdmService {
       select: userPublicSelector,
     });
     return verifiedUser;
+  }
+
+  async login(loginUserDto: LoginUserDto) {
+    const { email, password } = loginUserDto;
+    const user = await this.prismaService.user.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      throw new ConflictException('Invalid email or password');
+    }
+    const isPasswordValid = await this.hashService.verify(
+      password,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new ConflictException('Invalid email or password');
+    }
+    if (!user.isVerified) {
+      throw new ConflictException('User is not verified');
+    }
+    const accessToken = await this.jwtService.signAsync(
+      {
+        sub: user.id,
+        email: user.email,
+      },
+      {
+        audience: this.jwtConfiguation.audience,
+        issuer: this.jwtConfiguation.issuer,
+        secret: this.jwtConfiguation.secret,
+        expiresIn: this.jwtConfiguation.accessTokenTtl,
+      },
+    );
+    return { accessToken };
   }
 }

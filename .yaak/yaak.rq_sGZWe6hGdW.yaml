@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_dBP3NKXm6G
-createdAt: 2026-01-30T20:44:11.145892
-updatedAt: 2026-01-31T15:50:32.464162
+id: rq_sGZWe6hGdW
+createdAt: 2026-01-31T15:50:39.644546
+updatedAt: 2026-01-31T15:50:44.523450
 workspaceId: wk_4WFE4x42RK
 folderId: null
 authentication: {}
@@ -21,7 +21,7 @@ headers:
   value: application/json
   id: C24zJEBqWB
 method: POST
-name: ''
-sortPriority: -1769697538242.0
-url: http://localhost:3000/v1/idm/register
+name: localhost:3000/v1/idm/register Copy
+sortPriority: -1769697538241.999
+url: http://localhost:3000/v1/idm/login
 urlParameters: []

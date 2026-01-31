@@ -17,3 +17,12 @@ export class VerifyUserDto {
   @IsNotEmpty()
   verificationToken: string;
 }
+
+export class LoginUserDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
