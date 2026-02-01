@@ -5,7 +5,8 @@ import { DatabaseModule } from '@app/database';
 import { IdmModule } from './idm/idm.module';
 import { ThemeModule } from './theme/theme.module';
 import { APP_GUARD } from '@nestjs/core';
-import { HybridThrottlerGuard } from './idm/guards/throttle/throttle.guard';
+import { AccessTokenGuard } from './idm/guards/authentication/authentication.guard';
+import { ThrottleGuard } from './idm/guards/throttle/throttle.guard';
 
 @Module({
   imports: [
@@ -35,7 +36,11 @@ import { HybridThrottlerGuard } from './idm/guards/throttle/throttle.guard';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: HybridThrottlerGuard,
+      useClass: AccessTokenGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottleGuard,
     },
   ],
 })

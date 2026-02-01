@@ -18,7 +18,6 @@ export class IdmController {
   // refresh
   // logout
   @Post('register')
-  @Throttle({ short: {} })
   register(@Body() registerUserDto: RegisterUserDto) {
     return this.idmService.register(registerUserDto);
   }

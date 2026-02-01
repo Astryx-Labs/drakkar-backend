@@ -5,8 +5,6 @@ import { IdmService } from './idm.service';
 import { IdmController, TestController } from './idm.controller';
 import { SecurityModule } from '@app/security';
 import jwtConfig from './config/jwt.config';
-import { AccessTokenGuard } from './guards/authentication/authentication.guard';
-import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -15,12 +13,7 @@ import { APP_GUARD } from '@nestjs/core';
     JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
   controllers: [IdmController, TestController],
-  providers: [
-    IdmService,
-    {
-      provide: APP_GUARD,
-      useClass: AccessTokenGuard,
-    },
-  ],
+  providers: [IdmService],
+  exports: [JwtModule, ConfigModule],
 })
 export class IdmModule {}
